@@ -1,2 +1,5 @@
-django
-django-redis
+django==3.2.5
+django-filter==2.4.0
+django-redis==5.0.0
+djangorestframework==3.12.4
+markdown==3.3.4

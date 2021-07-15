@@ -9,8 +9,16 @@ asgiref==3.4.1
 django==3.2.5
     # via
     #   -r requirements.in
+    #   django-filter
     #   django-redis
+    #   djangorestframework
+django-filter==2.4.0
+    # via -r requirements.in
 django-redis==5.0.0
+    # via -r requirements.in
+djangorestframework==3.12.4
+    # via -r requirements.in
+markdown==3.3.4
     # via -r requirements.in
 pytz==2021.1
     # via django
