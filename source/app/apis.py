@@ -1,14 +1,15 @@
 from uuid import uuid4
 
+from django.core.cache import cache
 from rest_framework import serializers, views
 from rest_framework.response import Response
-from django.core.cache import cache
-from .models import Person
 
+from .models import Person
 
 
 class PersonContextSerializer(serializers.Serializer):
     """Your data serializer, define your fields here."""
+
     key = serializers.CharField()
 
 

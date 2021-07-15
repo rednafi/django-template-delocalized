@@ -113,9 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-REST_FRAMEWORK = {
-    
-}
+REST_FRAMEWORK = {}
 
 
 # Internationalization

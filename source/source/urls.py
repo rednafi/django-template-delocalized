@@ -26,4 +26,5 @@ urlpatterns = [
     path(
         "api/v1/persons_context",
         PersonContextAPIView.as_view(),
-    )]
+    ),
+]
