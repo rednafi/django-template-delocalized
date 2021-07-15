@@ -66,6 +66,8 @@ help: ## Show this help message.
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
 
-.PHONY: test
-test: ## Run the tests against the current version of Python.
-	pytest
+.PHONY: runserver
+runserver: ## Run the Django servers.
+	cd source &&\
+	python manage.py runserver 4000 &&\
+	cd .. && cd target && python manage.py runserver 5000
