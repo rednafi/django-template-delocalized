@@ -22,8 +22,6 @@ The idea is simple. Let's say you have a Django app and you want to decouple the
 * The `target` app will then use the key returned by the API to fetch the context object from the same cache backend.
 * The `target` app will deserialize the context object and use that to render the templates.
 
-## Installation
-
 
 ## Caveats
 
