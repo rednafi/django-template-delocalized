@@ -1,0 +1,16 @@
+<html>
+<head>
+
+</head>
+
+<body>
+  {% if persons %}
+    {% for person in persons %}
+      <p>Name: {{person.name}}</p>
+      <p>Age: {{person.age}}</p>
+      <p>Height: {{person.height}}</p>
+      <p>============================</p>
+    {% endfor %}
+  {% endif %}
+</body>
+</html>
