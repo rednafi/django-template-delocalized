@@ -1,14 +1,13 @@
+![My Post](https://user-images.githubusercontent.com/30027932/125779260-dfbc313f-284f-4440-9ac8-62fd602b0d5b.png)
+
+
 <div align="center">
 
-<h1>Django Template Delocalized</h1>
 <strong>>> <i>Decouple Your Django Templates From the Primary Monolith</i> <<</strong>
 
 &nbsp;
 
 </div>
-
-![img](https://user-images.githubusercontent.com/30027932/122619075-6a87b700-d0b1-11eb-9d6b-355446910cc1.png)
-
 
 
 ## Preface
@@ -28,7 +27,7 @@ The idea is simple. Let's say you have a Django app and you want to decouple the
 
 ## Caveats
 
-* Both `source` and `target` will need to have access to the same models. 
+* Both `source` and `target` will need to have access to the same models.
 
 
 
