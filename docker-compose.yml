@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+  redis:
+    image: 'redis:alpine'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - "6380:6380"
+    command: redis-server --port 6380
+    networks:
+      - isolation-network
+
+  source:
+    build: .
+    command: python source/manage.py runserver 0.0.0.0:4000
+    volumes:
+      - ./source:/code/source
+    ports:
+      - "4000:4000"
+    depends_on:
+      - redis
+    networks:
+      - isolation-network
+
+
+  target:
+    build: .
+    command: python target/manage.py runserver 0.0.0.0:5000
+    volumes:
+      - ./target:/code/target
+    ports:
+      - "5000:5000"
+    depends_on:
+      - redis
+      - source
+    networks:
+      - isolation-network
+
+networks:
+  isolation-network:
+    driver: bridge

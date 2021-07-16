@@ -18,8 +18,8 @@ class PersonContextAPIView(views.APIView):
         persons = Person.objects.all()
         persons_context_key = str(uuid4())
         persons_context_val = {"persons": persons}
-        cache.set(persons_context_key, persons_context_val, 10000)
-        data = [{"key": persons_context_key}]
-        results = PersonContextSerializer(data, many=True).data
+        cache.set(persons_context_key, persons_context_val)
+        data = {"key": persons_context_key}
+        results = PersonContextSerializer(data).data
         print(cache.get(persons_context_key))
         return Response(results)
