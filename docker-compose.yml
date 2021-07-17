@@ -13,7 +13,19 @@ services:
   source:
     build: .
     container_name: dtd_source
-    command: python source/manage.py runserver 0.0.0.0:4000
+    entrypoint: ["/bin/sh","-c"]
+    command:
+      - |
+        apt update
+        apt install findutils
+        find source -path "*/migrations/*.py" -not -name "__init__.py" -delete
+        find source -path "*/migrations/*.pyc"  -delete
+        find source -path "*/db.sqlite3" -delete
+        python source/manage.py makemigrations
+        python source/manage.py migrate
+        cd source && python -m app.scripts.script && cd ..
+        python source/manage.py runserver 0.0.0.0:4000
+
     volumes:
       - ./source:/code/source
     ports:
@@ -23,8 +35,17 @@ services:
 
   target:
     build: .
-    command: python target/manage.py runserver 0.0.0.0:5000
     container_name: dtd_target
+    entrypoint: ["/bin/sh","-c"]
+    command:
+      - |
+        apt update
+        apt install findutils
+        find target -path "*/migrations/*.py" -not -name "__init__.py" -delete
+        find target -path "*/migrations/*.pyc"  -delete
+        find target -path "*/db.sqlite3" -delete
+        python target/manage.py runserver 0.0.0.0:5000
+
     volumes:
       - ./target:/code/target
     ports:

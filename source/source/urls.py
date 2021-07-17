@@ -13,7 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from app.apis import PersonContextAPIView
+from app.apis import MusicContextAPIView
 from django.contrib import admin
 from django.urls import include, path
 
@@ -24,7 +24,7 @@ urlpatterns = [
         include("rest_framework.urls", namespace="rest_framework"),
     ),
     path(
-        "api/v1/persons_context",
-        PersonContextAPIView.as_view(),
+        "api/v1/music_context/",
+        MusicContextAPIView.as_view(),
     ),
 ]

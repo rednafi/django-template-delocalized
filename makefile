@@ -66,11 +66,11 @@ help: ## Show this help message.
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
 
-.PHONY: run_servers
-run_servers: ## Run the Django servers.
-	docker-compose up -d
+.PHONY: start_servers
+start_servers: ## Start the Django servers.
+	docker-compose up
 
 
 .PHONY: stop_servers
 stop_servers: ## Stop the Django servers.
-	docker-compose down && docker system prune
+	docker-compose down && docker system prune -f

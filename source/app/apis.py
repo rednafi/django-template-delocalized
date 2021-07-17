@@ -4,22 +4,37 @@ from django.core.cache import cache
 from rest_framework import serializers, views
 from rest_framework.response import Response
 
-from .models import Person
+from .models import Album, Musician
 
 
-class PersonContextSerializer(serializers.Serializer):
+class MusicContextSerializer(serializers.Serializer):
     """Your data serializer, define your fields here."""
 
     key = serializers.CharField()
 
 
-class PersonContextAPIView(views.APIView):
+class MusicContextAPIView(views.APIView):
     def get(self, request):
-        persons = Person.objects.all()
-        persons_context_key = str(uuid4())
-        persons_context_val = {"persons": persons}
-        cache.set(persons_context_key, persons_context_val)
-        data = {"key": persons_context_key}
-        results = PersonContextSerializer(data).data
-        print(cache.get(persons_context_key))
+        # Getting the object querysets.
+        musicians = Musician.objects.all()
+        albums = Album.objects.all()
+
+        # Generating key to store the context against.
+        music_context_key = str(uuid4())
+
+        # Building the context required to render the html.
+        music_context_val = {
+            "musicians": musicians,
+            "albums": albums,
+        }
+
+        # Storing the context in the shared cache.
+        cache.set(music_context_key, music_context_val)
+
+        # Returning the key to get the context from the other app.
+        data = {"key": music_context_key}
+        results = MusicContextSerializer(data).data
+
+        print(cache.get(music_context_key))
+
         return Response(results)

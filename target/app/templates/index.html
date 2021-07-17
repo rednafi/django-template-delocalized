@@ -4,11 +4,10 @@
 </head>
 
 <body>
-  {% if persons %}
-    {% for person in persons %}
-      <p>Name: {{person.name}}</p>
-      <p>Age: {{person.age}}</p>
-      <p>Height: {{person.height}}</p>
+  {% if musicians and albums %}
+    {% for musician in musicians %}
+      <p>Name: {{musician.first_name}} {{musician.last_name}}</p>
+      <p>Instrument: {{musician.instrument}}</p>
       <p>============================</p>
     {% endfor %}
   {% endif %}
