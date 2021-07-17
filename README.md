@@ -1,16 +1,23 @@
-![My Post](https://user-images.githubusercontent.com/30027932/125779260-dfbc313f-284f-4440-9ac8-62fd602b0d5b.png)
-
 
 <div align="center">
 
-<strong>>> <i>Decouple Your Django Templates From the Primary Monolith</i> <<</strong>
+![logo](https://user-images.githubusercontent.com/30027932/126042941-7d75786e-f08f-4334-a597-6c42732c12b5.png)
+
+<strong>>> <i>Decouple Your Template Rendering From the Primary Django Application</i> <<</strong>
 
 &nbsp;
 
+[![forthebadge](https://forthebadge.com/images/badges/made-with-python.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/built-with-resentment.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/powered-by-black-magic.svg)](https://forthebadge.com)
+
 </div>
 
+## What?
 
-## Preface
+## Why?
+
+##
 
 The idea is simple. Let's say you have a Django app and you want to decouple the templates from it and render them from a separate app. However, you'd still like to have access to all of the models and objects of the primary app. To do so, let's assume your primary app is called `source` and the decoupled templates lives in another app named `target`.
 
