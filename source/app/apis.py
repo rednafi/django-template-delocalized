@@ -14,6 +14,8 @@ class MusicContextSerializer(serializers.Serializer):
 
 
 class MusicContextAPIView(views.APIView):
+    """Returns the cache record key that contains the music context object."""
+
     def get(self, request):
         # Getting the object querysets.
         musicians = Musician.objects.all()
