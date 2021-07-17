@@ -17,7 +17,7 @@ Let's say you have a Django app and you want to detach the templates from it and
 
 ## Why?
 
-At my workplace, we're thinking about detaching the template rendering portion of our primary Django app and delegate that to a separate app. This will enable us to develop and deploy the templates at a cadence that is different from the comparatively slower pace of the main app. Also, the loose coupling implies that the development of these two entities can go on in their separate ways.
+At my workplace, we were thinking about detaching the template rendering portion of our primary Django app and delegate that to a separate app. This will enable us to develop and deploy the templates at a cadence that is different from the comparatively slower development pace of the main app. Also, the loose coupling implies that the development of these two entities can go on in their separate ways.
 
 ## How?
 
@@ -45,7 +45,6 @@ Assume that your primary Django app is called `source` and you want to decouple 
 The repository contains the code for two Django applications, the `source` and the `target` app.
 
 ### Source App
-
 
 
 The `source` app looks like any other Django application. In this demonstration, most of the modules in the `source` app are empty. It uses the Postgres database as its primary data container and Redis for caching purposes. You can find the details in `source/source/settings.py` file.
@@ -123,12 +122,12 @@ class MusicContextAPIView(views.APIView):
         return Response(results)
 ```
 
-Here, we're exposing a GET API that is accessible from `http://localhost:4000/api/v1/music_context. Notice how the `get` method first queries the database to build the `musicians` and `albums` queryset. Then it constructs the `context` and sends it to the cache with a random UUID key. The API then returns the key and it will later be  used by the `target` app to retrieve the `context` object and render the template.
+Here, we're exposing a GET API that is accessible from `http://localhost:4000/api/v1/music_context. Notice how the `get` method first queries the database to build the `musicians` and `albums` queryset. Then it constructs the `context` and sends it to the cache with a random UUID key. The API then returns the key and it will later be used by the `target` app to retrieve the `context` object and render the template.
 
 
 ### Target App
 
-The directory structure of the `target` app mimicks that of the `source` app. Here, too, the sub app is called `app`. Notice that the`app` folder contains a `templates` directory. The `target` app uses the `context` sent by the `source` and the `templates/index.html` template retrieves the data from the Postgres database using the querysets from the `context`.
+The directory structure of the `target` app mimics that of the `source` app. Here, too, the sub app is called `app`. Notice that the `app` folder contains a `templates` directory. The `target` app uses the `context` sent by the `source` and the `templates/index.html` template retrieves the data from the Postgres database using the querysets from the `context`.
 
 In the `target` app, interesting things only happen in the `target/app/views.py` module and the `target/templates/index.html` file.
 
@@ -177,7 +176,7 @@ class MusicView(View):
 ```
 
 Here, the dataclass `MusicContextShape` is used to validate the expected `context` shape from the cache. Notice that inside the `get` method of the `MusicView` class, we used `httpx` library to make a get API call to the API exposed by the `source` app.
-The API returns the cache key where the `context` lives inside the Redis database. The retrieved context is then injected into the template. If you take a look at the template, you'll see how it uses the queryset objects inside the `context` to display data. Here's the core content of the template:
+The API returns the cache key where the `context` lives inside the Redis database. The retrieved `context` is then injected into the template. If you take a look at the template, you'll see how it uses the queryset objects inside the `context` to display data. Here's the core content of the template:
 
 ```html
 ...
@@ -220,9 +219,22 @@ The API returns the cache key where the `context` lives inside the Redis databas
 
 ### Orchestration & Containerization
 
+This demonstration uses Docker and Docker Compose to orchestrate the different entities required for it to work. The 4 primary building blocks of the POC are:
+
+* A `source` app instance which can be regarded as the primary application.
+
+* A `target` app instance which renders the template using the data sent by the `source` app.
+
+* Postgres database as the primary data container. Both the `source` and the `target` app points to this. However, the `target` app never migrates or mutates the database. It has a read-only relationship with the main DB.
+
+* Redis database as the shared cache channel between `source` and `target`.
+
+The `docker-compose.yml` file orchestrates them in a stateless fashion. That means data is created and destroyed every time you spin up and put down the containers.
+
+**Migration and mutation of the primary database only happens in the `source` app. The `target` app isn't supposed to migrate or change the DB.**
+
 
 **TODO:**
-* Fill in the architecture details.
 * Add diagrams to make the end-to-end pipeline clearer.
 
 </details>
@@ -231,7 +243,9 @@ The API returns the cache key where the `context` lives inside the Redis databas
 
 * Make sure you've got Git, Docker, and Docker Compose installed on your machine.
 
-* Run `make run_servers` to spin up the orchestra. This will:
+* Clone the repository and head over to the root directory.
+
+* In the root directory, `make run_servers` on your terminal to spin up the orchestra. This will:
 
     * Start two instances of the `source` and the `target` Django apps.
     * Start a Postgres container that will be shared by the `source` and `target` apps.
@@ -252,6 +266,12 @@ The API returns the cache key where the `context` lives inside the Redis databas
 
 
 Here, the `context` was passed into the cache by the `source` app. The `target` app then picks it up, injects it into the template, and renders the table.
+
+* Once you're done fooling around with it you can run the following command to shut down and clean up everything.
+
+```
+make stop_servers
+```
 
 
 ## Caveats
