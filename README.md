@@ -175,7 +175,8 @@ class MusicView(View):
             raise ValueError("unexpected context shape")
 ```
 
-Here, the dataclass `MusicContextShape` is used to validate the expected `context` shape from the cache. Notice that inside the `get` method of the `MusicView` class, we used `httpx` library to make a get API call to the API exposed by the `source` app.
+Here, the dataclass `MusicContextShape` is used to validate the expected `context` shape from the cache. Notice that inside the `get` method of the `MusicView` class, `httpx` library was used to make a get API call to the API exposed by the `source` app.
+
 The API returns the cache key where the `context` lives inside the Redis database. The retrieved `context` is then injected into the template. If you take a look at the template, you'll see how it uses the queryset objects inside the `context` to display data. Here's the core content of the template:
 
 ```html
@@ -269,9 +270,9 @@ Here, the `context` was passed into the cache by the `source` app. The `target` 
 
 * Once you're done fooling around with it you can run the following command to shut down and clean up everything.
 
-```
-make stop_servers
-```
+    ```
+    make stop_servers
+    ```
 
 
 ## Caveats
