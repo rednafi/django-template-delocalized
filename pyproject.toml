@@ -2,12 +2,12 @@
 [tool.isort]
 profile = "black"
 atomic = true
-extend_skip_glob = "migrations,scripts"
+extend_skip_glob = "data,migrations,scripts"
 line_length = 88
 
 
 [tool.black]
-extend-exclude = "migrations,scripts"
+extend-exclude = "data,migrations,scripts"
 
 
 [tool.mypy]

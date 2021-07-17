@@ -1,6 +1,19 @@
 version: "3.8"
 
 services:
+  db:
+    image: postgres
+    container_name: dtd_postgres
+    # Not persisting data intentionally.
+    # volumes:
+    #   - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+
   redis:
     image: redis:alpine
     container_name: dtd_redis
@@ -32,6 +45,7 @@ services:
       - "4000:4000"
     depends_on:
       - redis
+      - db
 
   target:
     build: .
@@ -39,11 +53,6 @@ services:
     entrypoint: ["/bin/sh","-c"]
     command:
       - |
-        apt update
-        apt install findutils
-        find target -path "*/migrations/*.py" -not -name "__init__.py" -delete
-        find target -path "*/migrations/*.pyc"  -delete
-        find target -path "*/db.sqlite3" -delete
         python target/manage.py runserver 0.0.0.0:5000
 
     volumes:
@@ -52,4 +61,5 @@ services:
       - "5000:5000"
     depends_on:
       - redis
+      - db
       - source

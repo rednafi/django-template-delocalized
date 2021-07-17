@@ -33,7 +33,9 @@ class MusicView(View):
                 raise httpx.ConnectError("cannot connect to server")
 
         context = cache.get(key)
+        print(context["albums"][0].artist)
         if context.keys() == MusicContextShape.__dataclass_fields__.keys():
+
             return render(request, "index.html", context)
         else:
             raise ValueError("unexpected context shape")

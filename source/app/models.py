@@ -10,7 +10,12 @@ class Musician(models.Model):
 
 
 class Album(models.Model):
-    artist = models.ForeignKey(Musician, on_delete=models.SET_NULL, null=True)
+    artist = models.ForeignKey(
+        Musician,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name="albums",
+    )
     name = models.CharField(max_length=100)
     release_date = models.DateField()
     num_stars = models.IntegerField()

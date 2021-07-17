@@ -35,6 +35,4 @@ class MusicContextAPIView(views.APIView):
         data = {"key": music_context_key}
         results = MusicContextSerializer(data).data
 
-        print(cache.get(music_context_key))
-
         return Response(results)

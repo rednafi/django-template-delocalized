@@ -68,7 +68,7 @@ help: ## Show this help message.
 
 .PHONY: start_servers
 start_servers: ## Start the Django servers.
-	docker-compose up
+	docker-compose up --build
 
 
 .PHONY: stop_servers
