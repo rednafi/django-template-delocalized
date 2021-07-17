@@ -1,11 +1,9 @@
 
 <div align="center">
 
-![logo](https://user-images.githubusercontent.com/30027932/126042941-7d75786e-f08f-4334-a597-6c42732c12b5.png)
+![logo](https://user-images.githubusercontent.com/30027932/126043848-33cbf444-89e0-4c4d-afa0-ea1bfa2e4736.png)
 
 <strong>>> <i>Decouple Your Template Rendering From the Primary Django Application</i> <<</strong>
-
-&nbsp;
 
 [![forthebadge](https://forthebadge.com/images/badges/made-with-python.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/built-with-resentment.svg)](https://forthebadge.com)
