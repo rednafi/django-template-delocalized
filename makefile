@@ -81,7 +81,7 @@ create_topology: ## Creates topology diagram from docker compose file.
 
 .PHONY: start_servers
 start_servers: ## Start the Django servers.
-	docker-compose up --build
+	docker-compose up --build -d
 
 
 .PHONY: stop_servers
