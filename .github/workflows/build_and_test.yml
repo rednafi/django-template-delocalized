@@ -1,4 +1,4 @@
-name: Rubric Test
+name: Django Template Delocalization Build & Test
 
 on:
   push:
