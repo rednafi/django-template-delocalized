@@ -1,4 +1,8 @@
-"""These integration tests assume that all the docker containers are running. To execute the tests, run:
+"""
+These integration tests assume that all the docker containers are running.
+The tests are not meant to be run outside of a docker container.
+
+To execute the tests, run:
 
 make start_tests
 
