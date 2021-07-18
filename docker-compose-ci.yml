@@ -65,3 +65,24 @@ services:
       - redis
       - db
       - source
+
+  test:
+    build: .
+    container_name: dtd_test
+    entrypoint: ["/bin/sh","-c"]
+    command:
+      - |
+        pip install -r requirements-dev.txt
+        black . --check
+        isort . --check
+        pytest tests/integration_tests.py -s -v
+
+    volumes:
+      - ./:/code/
+    ports:
+      - "6000:6000"
+    depends_on:
+      - redis
+      - db
+      - source
+      - target

@@ -24,16 +24,8 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install dependencies
+      - name: Run the Linters, Build the Containers & Run the Tests
         run: |
-          python -m pip install --upgrade pip
-          echo 'requirements.txt requirements-dev.txt' | xargs -n 1 -P 2 pip install -r
+          curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 
-      - name: Lint Check
-        run: |
-          make lint_check
-
-      - name: Build the Containers and Run the Tests
-        run: |
-          make start_servers
-          make start_tests
+          make run_tests

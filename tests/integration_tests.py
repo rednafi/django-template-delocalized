@@ -1,17 +1,21 @@
-"""These integration tests assume that all the docker containers are running."""
+"""These integration tests assume that all the docker containers are running. To execute the tests, run:
+
+make start_tests
+
+"""
 
 from http import HTTPStatus
 
 import httpx
 from redis.client import Redis
 
-redis = Redis(port=6380, db=1)
+redis = Redis(host="redis", port=6380, db=1)
 
 
 def call_music_context_api() -> httpx.Response:
     """Calling the music context API running on the 'source' app instance."""
     with httpx.Client() as session:
-        response = session.get("http://localhost:4000/api/v1/music_context")
+        response = session.get("http://source:4000/api/v1/music_context")
         return response
 
 
@@ -37,10 +41,10 @@ def test_cache_injection() -> None:
     assert isinstance(context_raw, bytes)
 
 
-def test_musics_page():
+def test_musics_page() -> None:
     """Tests whether the 'Musics' page loads properly.
     This test runs against the 'target' app instance."""
 
     with httpx.Client() as session:
-        response = session.get("http://localhost:5000/musics")
+        response = session.get("http://target:5000/musics")
         assert response.status_code == HTTPStatus.OK
