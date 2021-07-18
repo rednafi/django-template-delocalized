@@ -94,4 +94,4 @@ dep_lock: ## Lock the dependencies.
 
 .PHONY: start_tests
 start_tests: ## Start running the tests.
-	pytest tests/integration_tests.py
+	docker-compose -f docker-compose-ci.yml up --build -d

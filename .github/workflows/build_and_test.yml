@@ -27,4 +27,4 @@ jobs:
       - name: Run the Linters, Build the Containers & Run the Tests
         run: |
           pip install docker-compose
-          make run_tests
+          make start_tests
