@@ -33,5 +33,7 @@ jobs:
         run: |
           make lint_check
 
-      - name: Test with pytest
+      - name: Build the Containers and Run the Tests
         run: |
+          make start_servers
+          make start_tests
