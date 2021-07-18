@@ -14,15 +14,13 @@ lint: black isort flake mypy	## Apply all the linters.
 
 
 .PHONY: lint-check
-lint-check:  ## Check whether the codebase satisfies the linter rules.
+lint_check:  ## Check whether the codebase satisfies the linter rules.
 	@echo
 	@echo "Checking linter rules..."
 	@echo "========================"
 	@echo
 	@black --check $(path)
 	@isort --check $(path)
-	@flake8 $(path)
-	@mypy $(path)
 
 
 .PHONY: black
@@ -65,7 +63,6 @@ mypy: ## Apply mypy.
 help: ## Show this help message.
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
-
 .PHONY: create_topology
 create_topology: ## Creates topology diagram from docker compose file.
 	@docker run \
@@ -87,3 +84,14 @@ start_servers: ## Start the Django servers.
 .PHONY: stop_servers
 stop_servers: ## Stop the Django servers.
 	docker-compose down && docker system prune -f
+
+
+.PHONY: dep_lock
+dep_lock: ## Lock the dependencies.
+	pip-compile requirements.in -o requirements.txt && \
+	pip-compile requirements-dev.in -o requirements-dev.txt
+
+
+.PHONY: start_tests
+start_tests: ## Start running the tests.
+	pytest tests/integration_tests.py

@@ -10,32 +10,28 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
+
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
         python-version: [3.9]
 
     steps:
       - uses: actions/checkout@v2
+
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Install the Dependencies
+
+      - name: Install dependencies
         run: |
-          echo "Upgrading pip ...."
           python -m pip install --upgrade pip
-          echo 'requirements.txt requirements-dev.txt' | \
-          xargs -n 1 -P 2 python -m pip install -r
+          echo 'requirements.txt requirements-dev.txt' | xargs -n 1 -P 2 pip install -r
 
-      - name: Check Linter
+      - name: Lint Check
         run: |
-          echo "Checking linter formatting..."
-          python -m pip black --check .
-          python -m pip isort --check .
+          make lint_check
 
-      - name: Spin Up the Containers
+      - name: Test with pytest
         run: |
-          make start_servers
-          python -m pytest tests/integration_tests.py
