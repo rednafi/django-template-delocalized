@@ -122,7 +122,7 @@ class MusicContextAPIView(views.APIView):
         return Response(results)
 ```
 
-Here, we're exposing a GET API that is accessible from `http://localhost:4000/api/v1/music_context. Notice how the `get` method first queries the database to build the `musicians` and `albums` queryset. Then it constructs the `context` and sends it to the cache with a random UUID key. The API then returns the key and it will later be used by the `target` app to retrieve the `context` object and render the template.
+Here, we're exposing a GET API that is accessible from `http://localhost:4000/api/v1/music_context`. Notice how the `get` method first queries the database to build the `musicians` and `albums` queryset. Then it constructs the `context` and sends it to the cache with a random UUID key. The API then returns the key and it will later be used by the `target` app to retrieve the `context` object and render the template.
 
 
 ### Target App
@@ -216,8 +216,6 @@ The API returns the cache key where the `context` lives inside the Redis databas
 
 ```
 
-
-
 ### Orchestration & Containerization
 
 This demonstration uses Docker and Docker Compose to orchestrate the different entities required for it to work. The 4 primary building blocks of the POC are:
@@ -230,13 +228,16 @@ This demonstration uses Docker and Docker Compose to orchestrate the different e
 
 * Redis database as the shared cache channel between `source` and `target`.
 
+The simplified topology diagram looks roughly like this:
+
+![topology](https://user-images.githubusercontent.com/30027932/126051355-af1faae6-0a30-4f80-91ea-cfe30cd30fc7.png)
+
+
 The `docker-compose.yml` file orchestrates them in a stateless fashion. That means data is created and destroyed every time you spin up and put down the containers.
 
 **Migration and mutation of the primary database only happens in the `source` app. The `target` app isn't supposed to migrate or change the DB.**
 
 
-**TODO:**
-* Add diagrams to make the end-to-end pipeline clearer.
 
 </details>
 

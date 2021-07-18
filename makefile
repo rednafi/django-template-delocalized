@@ -66,6 +66,19 @@ help: ## Show this help message.
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
 
+.PHONY: create_topology
+create_topology: ## Creates topology diagram from docker compose file.
+	@docker run \
+	--rm -it \
+	--name dcv \
+	-v /home/rednafi/workspace/personal/django-template-delocalized:/input pmsipilot/docker-compose-viz \
+	render -m image \
+	--force docker-compose.yml \
+	--output-file=topology.png \
+	--no-volumes \
+	--no-networks
+
+
 .PHONY: start_servers
 start_servers: ## Start the Django servers.
 	docker-compose up --build
