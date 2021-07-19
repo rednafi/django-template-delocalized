@@ -264,8 +264,11 @@ The `docker-compose.yml` file orchestrates them in a stateless fashion. That mea
 
 * On another tab, go to `http://localhost:5000/musics/`. This should give you the following result:
 
+<div align="center">
+
 ![Screenshot from 2021-07-18 02-04-06](https://user-images.githubusercontent.com/30027932/126048233-49fd3162-92c6-4a70-b485-636ed3c7992b.png)
 
+</div>
 
 Here, the `context` was passed into the cache by the `source` app. The `target` app then picks it up, injects it into the template, and renders the table.
 
