@@ -233,7 +233,7 @@ The simplified topology diagram looks roughly like this:
 ![topology](https://user-images.githubusercontent.com/30027932/126051355-af1faae6-0a30-4f80-91ea-cfe30cd30fc7.png)
 
 
-The `docker-compose.yml` file orchestrates them in a stateless fashion. That means data is created and destroyed every time you spin up and put down the containers.
+The `docker-compose.yml` file orchestrates the services in a stateless fashion. That means data is created and destroyed every time you spin up and put down the containers.
 
 **Migration and mutation of the primary database only happens in the `source` app. The `target` app isn't supposed to migrate or change the DB.**
 
