@@ -52,7 +52,6 @@ Assume that your primary Django app is called `source` and you want to decouple 
 
 ## Architecture Details
 
-<details><summary>Click to Expand</summary>
 
 The repository contains the code for two Django applications, the `source` and the `target` app.
 
@@ -249,9 +248,6 @@ The `docker-compose.yml` file orchestrates the services in a stateless fashion. 
 
 **Migration and mutation of the primary database only happens in the `source` app. The `target` app isn't supposed to migrate or change the DB.**
 
-
-
-</details>
 
 ## Installation & Exploration
 
