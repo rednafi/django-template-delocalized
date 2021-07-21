@@ -7,6 +7,18 @@
 
 </div>
 
+## Table of Contents
+
+  - [What?](#what)
+  - [Why?](#why)
+  - [How?](#how)
+  - [Architecture Details](#architecture-details)
+    - [Source App](#source-app)
+    - [Target App](#target-app)
+    - [Orchestration & Containerization](#orchestration-containerization)
+  - [Installation & Exploration](#installation-exploration)
+  - [Caveats](#caveats)
+
 ## What?
 
 This repository contains the exploration of a POC that was conceived in an attempt to decouple the template rendering part of a Django application from the primary application.
