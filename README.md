@@ -15,8 +15,8 @@
   - [Architecture Details](#architecture-details)
     - [Source App](#source-app)
     - [Target App](#target-app)
-    - [Orchestration & Containerization](#orchestration-containerization)
-  - [Installation & Exploration](#installation-exploration)
+    - [Orchestration & Containerization](#orchestration-&-containerization)
+  - [Installation & Exploration](#installation-&-exploration)
   - [Caveats](#caveats)
 
 ## What?
