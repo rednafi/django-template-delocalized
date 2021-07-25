@@ -25,6 +25,7 @@ class MusicContextShape:
 
 class MusicView(View):
     def get(self, request):
+        # Making an http GET request to get the 'key' associated with the context.
         with httpx.Client(http2=True) as session:
             res = session.get("http://source:4000/api/v1/music_context")
             if res.status_code == http_status.OK:
@@ -32,10 +33,14 @@ class MusicView(View):
             else:
                 raise httpx.ConnectError("cannot connect to server")
 
+        # Using the 'key' to retrieve the context object from the cache.
         context = cache.get(key)
         print(context["albums"][0].artist)
+
+        # Verifying if the context has the expected shape.
         if context.keys() == MusicContextShape.__dataclass_fields__.keys():
 
+            # Injecting the context into the template.
             return render(request, "index.html", context)
         else:
             raise ValueError("unexpected context shape")

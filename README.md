@@ -90,47 +90,52 @@ class Album(models.Model):
 Now, if you look into the `source/app/apis.py` file, you'll see that's where the magic happens.
 
 ```python
+from __future__ import annotations
 
-from uuid import uuid4
+import typing
+from dataclasses import dataclass
+from http import HTTPStatus as http_status
 
+import httpx
 from django.core.cache import cache
-from rest_framework import serializers, views
-from rest_framework.response import Response
+from django.shortcuts import render
+from django.views import View
 
-from .models import Album, Musician
+if typing.TYPE_CHECKING:
+    from django.db.models import QuerySet
 
-
-class MusicContextSerializer(serializers.Serializer):
-    """Your data serializer, define your fields here."""
-
-    key = serializers.CharField()
+    from target.app import models as target_models
 
 
-class MusicContextAPIView(views.APIView):
-    """Returns the cache record key that contains the music context object."""
+@dataclass
+class MusicContextShape:
+    """This is going to be the shape of the retrieved context."""
 
+    musicians: QuerySet[target_models.Musician]
+    albums: QuerySet[target_models.Album]
+
+
+class MusicView(View):
     def get(self, request):
-        # Getting the object querysets.
-        musicians = Musician.objects.all()
-        albums = Album.objects.all()
+        # Making an http GET request to get the 'key' associated with the context.
+        with httpx.Client(http2=True) as session:
+            res = session.get("http://source:4000/api/v1/music_context")
+            if res.status_code == http_status.OK:
+                key = res.json()["key"]
+            else:
+                raise httpx.ConnectError("cannot connect to server")
 
-        # Generating key to store the context against.
-        music_context_key = str(uuid4())
+        # Using the 'key' to retrieve the context object from the cache.
+        context = cache.get(key)
+        print(context["albums"][0].artist)
 
-        # Building the context required to render the html.
-        music_context_val = {
-            "musicians": musicians,
-            "albums": albums,
-        }
+        # Verifying if the context has the expected shape.
+        if context.keys() == MusicContextShape.__dataclass_fields__.keys():
 
-        # Storing the context in the shared cache.
-        cache.set(music_context_key, music_context_val)
-
-        # Returning the key to get the context from the other app.
-        data = {"key": music_context_key}
-        results = MusicContextSerializer(data).data
-
-        return Response(results)
+            # Injecting the context into the template.
+            return render(request, "index.html", context)
+        else:
+            raise ValueError("unexpected context shape")
 ```
 
 Here, we're exposing a GET API that is accessible from `http://localhost:4000/api/v1/music_context`. Notice how the `get` method first queries the database to build the `musicians` and `albums` queryset. Then it constructs the `context` and sends it to the cache with a random UUID key. The API then returns the key and it will later be used by the `target` app to retrieve the `context` object and render the template.
