@@ -90,6 +90,58 @@ class Album(models.Model):
 Now, if you look into the `source/app/apis.py` file, you'll see that's where the magic happens.
 
 ```python
+from uuid import uuid4
+
+from django.core.cache import cache
+from rest_framework import serializers, views
+from rest_framework.response import Response
+
+from .models import Album, Musician
+
+
+class MusicContextSerializer(serializers.Serializer):
+    """Your data serializer, define your fields here."""
+
+    key = serializers.CharField()
+
+
+class MusicContextAPIView(views.APIView):
+    """Returns the cache record key that contains the music context object."""
+
+    def get(self, request):
+        # Getting the object querysets.
+        musicians = Musician.objects.all()
+        albums = Album.objects.all()
+
+        # Generating key to store the context against.
+        music_context_key = str(uuid4())
+
+        # Building the context required to render the html.
+        music_context_val = {
+            "musicians": musicians,
+            "albums": albums,
+        }
+
+        # Storing the context in the shared cache.
+        cache.set(music_context_key, music_context_val)
+
+        # Returning the key to get the context from the other app.
+        data = {"key": music_context_key}
+        results = MusicContextSerializer(data).data
+
+        return Response(results)
+```
+
+Here, we're exposing a GET API that is accessible from `http://localhost:4000/api/v1/music_context`. Notice how the `get` method first queries the database to build the `musicians` and `albums` queryset. Then it constructs the `context` and sends it to the cache with a random UUID key. The API then returns the key and it will later be used by the `target` app to retrieve the `context` object and render the template.
+
+
+### Target App
+
+The directory structure of the `target` app mimics that of the `source` app. Here, too, the sub app is called `app`. Notice that the `app` folder contains a `templates` directory. The `target` app uses the `context` sent by the `source` and the `templates/index.html` template retrieves the data from the Postgres database using the querysets from the `context`.
+
+In the `target` app, interesting things only happen in the `target/app/views.py` module and the `target/templates/index.html` file.
+
+```python
 from __future__ import annotations
 
 import typing
@@ -133,59 +185,6 @@ class MusicView(View):
         if context.keys() == MusicContextShape.__dataclass_fields__.keys():
 
             # Injecting the context into the template.
-            return render(request, "index.html", context)
-        else:
-            raise ValueError("unexpected context shape")
-```
-
-Here, we're exposing a GET API that is accessible from `http://localhost:4000/api/v1/music_context`. Notice how the `get` method first queries the database to build the `musicians` and `albums` queryset. Then it constructs the `context` and sends it to the cache with a random UUID key. The API then returns the key and it will later be used by the `target` app to retrieve the `context` object and render the template.
-
-
-### Target App
-
-The directory structure of the `target` app mimics that of the `source` app. Here, too, the sub app is called `app`. Notice that the `app` folder contains a `templates` directory. The `target` app uses the `context` sent by the `source` and the `templates/index.html` template retrieves the data from the Postgres database using the querysets from the `context`.
-
-In the `target` app, interesting things only happen in the `target/app/views.py` module and the `target/templates/index.html` file.
-
-```python
-from __future__ import annotations
-
-import typing
-from dataclasses import dataclass
-from http import HTTPStatus as http_status
-
-import httpx
-from django.core.cache import cache
-from django.shortcuts import render
-from django.views import View
-
-if typing.TYPE_CHECKING:
-    from django.db.models import QuerySet
-
-    from target.app import models as target_models
-
-
-@dataclass
-class MusicContextShape:
-    """This is going to be the shape of the retrieved context."""
-
-    musicians: QuerySet[target_models.Musician]
-    albums: QuerySet[target_models.Album]
-
-
-class MusicView(View):
-    def get(self, request):
-        with httpx.Client(http2=True) as session:
-            res = session.get("http://source:4000/api/v1/music_context")
-            if res.status_code == http_status.OK:
-                key = res.json()["key"]
-            else:
-                raise httpx.ConnectError("cannot connect to server")
-
-        context = cache.get(key)
-        print(context["albums"][0].artist)
-        if context.keys() == MusicContextShape.__dataclass_fields__.keys():
-
             return render(request, "index.html", context)
         else:
             raise ValueError("unexpected context shape")
