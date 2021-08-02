@@ -10,7 +10,7 @@ asgiref==3.4.1
     # via django
 certifi==2021.5.30
     # via httpx
-django==3.2.5
+django==3.2.6
     # via
     #   -r requirements.in
     #   django-filter
