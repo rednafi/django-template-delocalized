@@ -10,6 +10,8 @@ asgiref==3.4.1
     # via django
 certifi==2021.5.30
     # via httpx
+charset-normalizer==2.0.4
+    # via httpx
 django==3.2.6
     # via
     #   -r requirements.in
@@ -30,7 +32,7 @@ hpack==3.0.0
     # via h2
 httpcore==0.13.6
     # via httpx
-httpx[http2]==0.18.2
+httpx[http2]==0.19.0
     # via -r requirements.in
 hyperframe==5.2.0
     # via h2
