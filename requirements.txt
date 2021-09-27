@@ -18,7 +18,7 @@ django==3.2.7
     #   django-filter
     #   django-redis
     #   djangorestframework
-django-filter==2.4.0
+django-filter==21.1
     # via -r requirements.in
 django-redis==5.0.0
     # via -r requirements.in
