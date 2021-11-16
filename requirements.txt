@@ -9,7 +9,9 @@ anyio==3.2.1
 asgiref==3.4.1
     # via django
 certifi==2021.5.30
-    # via httpx
+    # via
+    #   httpcore
+    #   httpx
 charset-normalizer==2.0.4
     # via httpx
 django==3.2.9
@@ -30,9 +32,9 @@ h2==3.2.0
     # via httpx
 hpack==3.0.0
     # via h2
-httpcore==0.13.6
+httpcore==0.14.1
     # via httpx
-httpx[http2]==0.20.0
+httpx[http2]==0.21.0
     # via -r requirements.in
 hyperframe==5.2.0
     # via h2
