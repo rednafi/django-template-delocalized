@@ -42,7 +42,7 @@ idna==3.2
     # via
     #   anyio
     #   rfc3986
-markdown==3.3.5
+markdown==3.3.6
     # via -r requirements.in
 pytz==2021.1
     # via django
