@@ -3,4 +3,4 @@ django-filter==21.1
 django-redis==5.0.0
 djangorestframework==3.12.4
 markdown==3.3.6
-httpx[http2]==0.21.0
+httpx[http2]==0.21.1
