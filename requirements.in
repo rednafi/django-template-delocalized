@@ -1,4 +1,4 @@
-django==3.2.9
+django==3.2.10
 django-filter==21.1
 django-redis==5.1.0
 djangorestframework==3.12.4
