@@ -14,7 +14,7 @@ certifi==2021.5.30
     #   httpx
 charset-normalizer==2.0.4
     # via httpx
-django==3.2.10
+django==4.0
     # via
     #   -r requirements.in
     #   django-filter
@@ -45,9 +45,7 @@ idna==3.2
 markdown==3.3.6
     # via -r requirements.in
 pytz==2021.1
-    # via
-    #   django
-    #   djangorestframework
+    # via djangorestframework
 redis==3.5.3
     # via django-redis
 rfc3986[idna2008]==1.5.0
