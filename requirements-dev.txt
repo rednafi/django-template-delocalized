@@ -20,7 +20,7 @@ isort==5.10.1
     # via -r requirements-dev.in
 mccabe==0.6.1
     # via flake8
-mypy==0.910
+mypy==0.920
     # via -r requirements-dev.in
 mypy-extensions==0.4.3
     # via
@@ -50,11 +50,12 @@ pytest==6.2.5
     # via -r requirements-dev.in
 toml==0.10.2
     # via
-    #   mypy
     #   pep517
     #   pytest
-tomli==1.0.4
-    # via black
+tomli==1.2.3
+    # via
+    #   black
+    #   mypy
 typing-extensions==3.10.0.0
     # via
     #   black
