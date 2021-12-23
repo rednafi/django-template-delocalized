@@ -22,7 +22,7 @@ django==4.0
     #   djangorestframework
 django-filter==21.1
     # via -r requirements.in
-django-redis==5.1.0
+django-redis==5.2.0
     # via -r requirements.in
 djangorestframework==3.13.0
     # via -r requirements.in
