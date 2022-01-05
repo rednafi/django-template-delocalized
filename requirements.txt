@@ -14,7 +14,7 @@ certifi==2021.5.30
     #   httpx
 charset-normalizer==2.0.4
     # via httpx
-django==4.0
+django==4.0.1
     # via
     #   -r requirements.in
     #   django-filter
