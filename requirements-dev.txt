@@ -6,7 +6,7 @@
 #
 attrs==21.2.0
     # via pytest
-black==21.12b0
+black==22.1.0
     # via -r requirements-dev.in
 click==8.0.1
     # via
@@ -57,9 +57,7 @@ tomli==1.2.3
     #   black
     #   mypy
 typing-extensions==3.10.0.0
-    # via
-    #   black
-    #   mypy
+    # via mypy
 wheel==0.36.2
     # via pip-tools
 
