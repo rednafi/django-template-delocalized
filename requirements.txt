@@ -32,9 +32,9 @@ h2==3.2.0
     # via httpx
 hpack==3.0.0
     # via h2
-httpcore==0.14.1
+httpcore==0.14.5
     # via httpx
-httpx[http2]==0.21.3
+httpx[http2]==0.22.0
     # via -r requirements.in
 hyperframe==5.2.0
     # via h2
