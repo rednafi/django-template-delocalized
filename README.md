@@ -3,21 +3,9 @@
 
 ![logo](https://user-images.githubusercontent.com/30027932/126043848-33cbf444-89e0-4c4d-afa0-ea1bfa2e4736.png)
 
-<strong>>> <i>Decouple Your Template Rendering From the Primary Django Application</i> <<</strong>
+<strong>>> <i>Decouple your template rendering from the primary Django app</i> <<</strong>
 
 </div>
-
-## Table of Contents
-
-  - [What?](#what)
-  - [Why?](#why)
-  - [How?](#how)
-  - [Architecture Details](#architecture-details)
-    - [Source App](#source-app)
-    - [Target App](#target-app)
-    - [Orchestration & Containerization](#orchestration--containerization)
-  - [Installation & Exploration](#installation--exploration)
-  - [Caveats](#caveats)
 
 ## What?
 
@@ -50,12 +38,12 @@ Assume that your primary Django app is called `source` and you want to decouple 
 * The serialization and the deserialization of the `context` objects are taken care of by Django's built-in cache framework.
 
 
-## Architecture Details
+## Architecture details
 
 
 The repository contains the code for two Django applications, the `source` and the `target` app.
 
-### Source App
+### Source app
 
 
 The `source` app looks like any other Django application. In this demonstration, most of the modules in the `source` app are empty. It uses the Postgres database as its primary data container and Redis for caching purposes. You can find the details in `source/source/settings.py` file.
@@ -135,7 +123,7 @@ class MusicContextAPIView(views.APIView):
 Here, we're exposing a GET API that is accessible from `http://localhost:4000/api/v1/music_context`. Notice how the `get` method first queries the database to build the `musicians` and `albums` queryset. Then it constructs the `context` and sends it to the cache with a random UUID key. The API then returns the key and it will later be used by the `target` app to retrieve the `context` object and render the template.
 
 
-### Target App
+### Target app
 
 The directory structure of the `target` app mimics that of the `source` app. Here, too, the sub app is called `app`. Notice that the `app` folder contains a `templates` directory. The `target` app uses the `context` sent by the `source` and the `templates/index.html` template retrieves the data from the Postgres database using the querysets from the `context`.
 
@@ -231,7 +219,7 @@ The API returns the cache key where the `context` lives inside the Redis databas
 
 ```
 
-### Orchestration & Containerization
+### Orchestration & containerization
 
 This demonstration uses Docker and Docker Compose to orchestrate the different entities required for it to work. The 4 primary building blocks of the POC are:
 
@@ -253,7 +241,7 @@ The `docker-compose.yml` file orchestrates the services in a stateless fashion. 
 **Migration and mutation of the primary database only happens in the `source` app. The `target` app isn't supposed to migrate or change the DB.**
 
 
-## Installation & Exploration
+## Installation & exploration
 
 * Make sure you've got Git, Docker, and Docker Compose installed on your machine.
 
