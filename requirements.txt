@@ -12,8 +12,6 @@ certifi==2021.5.30
     # via
     #   httpcore
     #   httpx
-charset-normalizer==2.0.4
-    # via httpx
 django==4.0.4
     # via
     #   -r requirements.in
@@ -32,9 +30,9 @@ h2==3.2.0
     # via httpx
 hpack==3.0.0
     # via h2
-httpcore==0.14.5
+httpcore==0.15.0
     # via httpx
-httpx[http2]==0.22.0
+httpx[http2]==0.23.0
     # via -r requirements.in
 hyperframe==5.2.0
     # via h2
